@@ -18,21 +18,18 @@ class Game
     loop do
       puts "#{@current_player.char} make a move"
       position = gets.chomp.to_i
-      player_move(@current_player, @board, position)
-      return puts "#{current_player.char} wins!" if winner?(@current_player)
+      player_move(@current_player, position)
+      return puts "#{current_player.char} wins!" if winner?
       return puts "It's a draw." if no_empty_spaces?
 
       switch_players!
     end
   end
 
-  private
-
-  def player_move(player, board, position)
+  def player_move(player, position)
     while (1..9).include? position
-      puts "You've picked #{position}"
       if (1..9).include? @board[position]
-        board[position] = player.char
+        @board[position] = player.char
         show_board
         position = 0
       else
@@ -42,9 +39,9 @@ class Game
     end
   end
 
-  def winner?(player)
+  def winner?
     CHECK.any? do |row|
-      row.all? { |number| @board[number] == player.char }
+      row.all? { |number| @board[number] == current_player.char }
     end
   end
 
@@ -63,7 +60,7 @@ class Game
   end
 
   def no_empty_spaces?
-    @board.all? do |number| 
+    @board.all? do |number|
       !number.is_a? Numeric
     end
   end
@@ -76,6 +73,5 @@ class Player
     @char = char
   end
 end
-
-game = Game.new
-game.play
+# game = Game.new
+# game.play
